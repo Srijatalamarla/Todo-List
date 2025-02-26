@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
 
     @Autowired
@@ -43,6 +43,11 @@ public class TaskController {
         return updatedTask != null ? ResponseEntity.ok(updatedTask) : ResponseEntity.notFound().build();
     }
 
+    @PatchMapping("/{id}/toggle-completion")
+    public ResponseEntity<Task> toggleTaskCompletion(@PathVariable Long id) {
+        Task updatedTask = taskService.toggleTaskCompletion(id);
+        return updatedTask != null ? ResponseEntity.ok(updatedTask) : ResponseEntity.notFound().build();
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTaskById(id);

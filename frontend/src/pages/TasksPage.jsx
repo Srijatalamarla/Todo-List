@@ -3,11 +3,14 @@ import Task from "../components/Task"
 import CreateTask from "../components/CreateTask";
 
 const TasksPage = () => {
+
+    const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
     const [tasks, setTasks] = useState([]);
 
     const loadTasks = () => {
         console.log("Fetching tasks");
-        fetch("http://localhost:8080/tasks")
+        fetch(`${API_BASE_URL}/api/v1/tasks`)
             .then(res => res.json())
             .then(data => setTasks(data))
             .catch(error => console.error("Error fetching tasks: ", error));
@@ -29,7 +32,7 @@ const TasksPage = () => {
                 <ul>
                     {tasks.map((task) => {
                         return (
-                            <Task key={task.id} task={task} />
+                            <Task key={task.id} task={task} onTaskUpdated={loadTasks} />
                         )
                     })}
                 </ul>}

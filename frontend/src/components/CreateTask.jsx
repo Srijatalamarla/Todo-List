@@ -17,7 +17,9 @@ const CreateTask = ({ onTaskCreated }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        axios.post("http://localhost:8080/tasks", task)
+        const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+        axios.post(`${API_BASE_URL}/api/v1/tasks`, task)
             .then((res) => {
                 console.log(res.status, res.data);
 

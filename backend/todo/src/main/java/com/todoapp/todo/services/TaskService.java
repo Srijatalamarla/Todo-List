@@ -4,6 +4,7 @@ import com.todoapp.todo.models.Task;
 import com.todoapp.todo.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,18 @@ public class TaskService {
             updatedTask.setCompleted(task.isCompleted());
             return taskRepository.save(updatedTask);
         }
+        return null;
+    }
+
+    @Transactional
+    public Task toggleTaskCompletion(Long id) {
+        Task task = taskRepository.findById(id).orElse(null);
+
+        if(task != null) {
+            task.setCompleted(!task.isCompleted());
+            return taskRepository.save(task);
+        }
+
         return null;
     }
 }

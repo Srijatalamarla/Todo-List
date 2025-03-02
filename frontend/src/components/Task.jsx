@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import "../styles/Task.css";
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -64,7 +65,7 @@ const Task = ({ task, onTaskUpdated }) => {
                 </div >
             )}
 
-            <li key={task.id}>
+            <li key={task.id} className={`task-item ${task.completed ? "completed" : "incompleted"}`}>
                 <div className="toggle-task-completion">
                     <label htmlFor="toggle-task-completion"></label>
                     <input
@@ -75,8 +76,10 @@ const Task = ({ task, onTaskUpdated }) => {
                         onChange={() => toggleTaskCompletion(task.id)}
                     />
                 </div>
-                <strong>{task.title}</strong> - {task.description} -{" "}
-                {task.completed ? "✅ Completed" : "❌ Pending"}
+                <div className="task-content">
+                    <strong>{task.title}</strong> - {task.description} -{" "}
+                    {task.completed ? "✅ Completed" : "❌ Pending"}
+                </div>
                 <div>
                     <button onClick={() => setIsEditing(true)}>Edit</button>
                     <button onClick={() => deleteTask(task.id)}>Delete</button>

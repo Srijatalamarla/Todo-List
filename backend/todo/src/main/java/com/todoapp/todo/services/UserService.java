@@ -16,6 +16,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User registerUser(User user) {
+        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already registered");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -24,7 +27,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public boolean checkUserCredentials(String email, String password) {
+    public boolean validateUserCredentials(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
         if(userOptional.isEmpty()) {
@@ -35,7 +38,11 @@ public class UserService {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+    public boolean deleteUserById(Long id) {
+        if(userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

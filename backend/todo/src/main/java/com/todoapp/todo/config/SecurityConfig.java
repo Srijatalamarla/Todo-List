@@ -16,6 +16,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for testing
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login").permitAll() // Allow registration without authentication
+                        .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated() // Secure other endpoints
                 )
                 .formLogin(form -> form.disable()) // Disable default login form
